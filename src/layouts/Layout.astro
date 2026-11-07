@@ -1,0 +1,51 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import { profile } from '../data/profile';
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og-image.png', Astro.site).href;
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.fullName,
+  jobTitle: profile.role,
+  address: { '@type': 'PostalAddress', addressLocality: 'Amman', addressCountry: 'JO' },
+  url: Astro.site?.href,
+  sameAs: [profile.contact.linkedin, profile.contact.github],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{profile.seo.title}</title>
+    <meta name="description" content={profile.seo.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f7f4ee" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={profile.seo.title} />
+    <meta property="og:description" content={profile.seo.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${profile.name} — ${profile.headline}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Preload only the two faces seen first (name and body text); the rest load as needed. -->
+    <Font cssVariable="--font-serif" preload={[{ weight: 400, style: 'normal' }]} />
+    <Font cssVariable="--font-sans" preload={[{ weight: 400, style: 'normal' }]} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>

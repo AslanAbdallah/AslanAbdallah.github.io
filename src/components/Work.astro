@@ -1,0 +1,230 @@
+---
+import { Image } from 'astro:assets';
+import { profile } from '../data/profile';
+import SectionHead from './SectionHead.astro';
+
+const featured = profile.projects.filter((p) => p.featured);
+const others = profile.projects.filter((p) => !p.featured);
+---
+
+<section class="section" id="work" aria-labelledby="work-title">
+  <div class="container">
+    <SectionHead id="work-title" eyebrow="02 — Work" {...profile.sections.work} />
+
+    <div class="featured">
+      {
+        featured.map((project, i) => (
+          <article class:list={['feature', { flip: i % 2 === 1 }]}>
+            <div class="feature-media">
+              {project.image ? (
+                <Image
+                  src={project.image.src}
+                  alt={project.image.alt}
+                  widths={[480, 720, 960, 1280]}
+                  sizes="(max-width: 900px) 100vw, 560px"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="media-placeholder" aria-hidden="true">
+                  {project.name}
+                </div>
+              )}
+            </div>
+
+            <div class="feature-body">
+              <p class="kind">{project.kind}</p>
+              <h3>{project.name}</h3>
+              <p class="description">{project.description}</p>
+              {project.highlights.length > 0 && (
+                <ul class="dash-list">
+                  {project.highlights.map((h) => (
+                    <li>{h}</li>
+                  ))}
+                </ul>
+              )}
+              <ul class="tag-list" aria-label="Built with">
+                {project.stack.map((s) => (
+                  <li class="tag">{s}</li>
+                ))}
+              </ul>
+              <p class="role">{project.role}</p>
+              {project.link && (
+                <a class="visit" href={project.link.href} target="_blank" rel="noopener noreferrer">
+                  Visit {project.link.label}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="cards">
+      {
+        others.map((project) => (
+          <article class="card">
+            <p class="kind">{project.kind}</p>
+            <h3>{project.name}</h3>
+            <p class="description">{project.description}</p>
+            {project.highlights.length > 0 && (
+              <ul class="dash-list">
+                {project.highlights.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+            )}
+            <ul class="tag-list" aria-label="Built with">
+              {project.stack.map((s) => (
+                <li class="tag">{s}</li>
+              ))}
+            </ul>
+            <div class="card-foot">
+              <p class="role">{project.role}</p>
+              {project.link ? (
+                <a class="visit" href={project.link.href} target="_blank" rel="noopener noreferrer">
+                  {project.link.label}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              ) : (
+                <span class="private">Internal — not public</span>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .featured {
+    display: grid;
+    gap: clamp(3.5rem, 8vw, 6rem);
+  }
+
+  .feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .feature.flip .feature-media {
+    order: 2;
+  }
+
+  .feature-media {
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--paper-raised);
+  }
+
+  .feature-media :global(img) {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .media-placeholder {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 10;
+    background: var(--accent-tint);
+    color: var(--accent);
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    letter-spacing: -0.02em;
+  }
+
+  .feature-body {
+    display: grid;
+    gap: 1.1rem;
+    align-content: start;
+  }
+
+  .kind {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+
+  .feature h3 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    margin-top: -0.5rem;
+  }
+
+  .description {
+    color: var(--ink-2);
+  }
+
+  .role {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+  }
+
+  .visit {
+    justify-self: start;
+    display: inline-flex;
+    gap: 0.35rem;
+    font-weight: 500;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-top: clamp(4rem, 8vw, 6rem);
+  }
+
+  .card {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+
+  .card h3 {
+    font-size: 1.75rem;
+    margin-top: -0.4rem;
+  }
+
+  .card .dash-list {
+    font-size: 0.975rem;
+  }
+
+  .card-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    margin-top: 0.25rem;
+  }
+
+  .private {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+  }
+
+  @media (max-width: 900px) {
+    .feature {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .feature.flip .feature-media {
+      order: 0;
+    }
+
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

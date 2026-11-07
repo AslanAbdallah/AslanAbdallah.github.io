@@ -1,0 +1,139 @@
+---
+import { profile } from '../data/profile';
+import SectionHead from './SectionHead.astro';
+
+const yearOf = (date: string) => date.match(/\d{4}/)?.[0] ?? date;
+
+const entries = profile.experience.map((entry) => {
+  const first = entry.roles[entry.roles.length - 1];
+  const last = entry.roles[0];
+  return { ...entry, span: `${yearOf(first.start)} — ${last.end === 'Present' ? 'now' : yearOf(last.end)}` };
+});
+---
+
+<section class="section" id="experience" aria-labelledby="experience-title">
+  <div class="container">
+    <SectionHead id="experience-title" eyebrow="03 — Experience" {...profile.sections.experience} />
+
+    <ol class="timeline">
+      {
+        entries.map((entry) => (
+          <li class="entry">
+            <p class="span">{entry.span}</p>
+            <div class="entry-body">
+              {entry.roles.map((role) => (
+                <div class="role">
+                  <h3>{role.title}</h3>
+                  <p class="where">
+                    {role.company} · {role.location}
+                  </p>
+                  <p class="dates">
+                    {role.start} – {role.end}
+                  </p>
+                </div>
+              ))}
+              {entry.summary && <p class="summary">{entry.summary}</p>}
+              <div class="groups">
+                {entry.groups.map((group) => (
+                  <div class="group">
+                    {group.heading && <h4>{group.heading}</h4>}
+                    <ul class="dash-list">
+                      {group.points.map((point) => (
+                        <li>{point}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 2rem;
+    padding-block: 2.5rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .entry:first-child {
+    border-top: 1px solid var(--ink);
+  }
+
+  .span {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .entry-body {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 48rem;
+  }
+
+  .role + .role {
+    padding-top: 1.25rem;
+    border-top: 1px dashed var(--rule);
+  }
+
+  h3 {
+    font-size: 1.625rem;
+  }
+
+  .where {
+    margin-top: 0.35rem;
+    color: var(--ink);
+  }
+
+  .dates {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+  }
+
+  .summary {
+    color: var(--ink-2);
+    font-style: italic;
+    font-family: var(--serif);
+    font-size: 1.125rem;
+  }
+
+  .groups {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  h4 {
+    margin: 0 0 0.6rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+
+  .dash-list {
+    font-size: 0.975rem;
+  }
+
+  @media (max-width: 720px) {
+    .entry {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1rem;
+    }
+  }
+</style>

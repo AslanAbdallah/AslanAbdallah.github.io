@@ -1,0 +1,64 @@
+---
+import { profile } from '../data/profile';
+
+const { contact } = profile;
+---
+
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="container">
+    <p class="eyebrow">06 — Contact</p>
+    <h2 id="contact-title">{contact.heading}</h2>
+    <p class="body">{contact.body}</p>
+
+    <div class="actions">
+      <a class="btn btn-primary" href={`mailto:${contact.email}`}>
+        <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.75" y="3.25" width="12.5" height="9.5" rx="1.5" /><path d="m2.5 4.5 5.5 4 5.5-4" /></svg>
+        Email me
+      </a>
+      <a class="btn btn-secondary" href={contact.linkedin} target="_blank" rel="noopener noreferrer">
+        LinkedIn <span aria-hidden="true">↗</span>
+      </a>
+      <a class="btn btn-secondary" href={contact.github} target="_blank" rel="noopener noreferrer">
+        GitHub <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+
+    <p class="email">{contact.email}</p>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--rule);
+    background: var(--paper-raised);
+  }
+
+  h2 {
+    margin-top: 1rem;
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    max-width: 14em;
+  }
+
+  .body {
+    margin-top: 1.5rem;
+    max-width: 38rem;
+    font-size: 1.125rem;
+    color: var(--ink-2);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+  }
+
+  .email {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--ink-3);
+  }
+</style>
