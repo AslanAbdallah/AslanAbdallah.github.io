@@ -19,34 +19,58 @@ export interface Pillar {
   points: string[];
 }
 
-export interface Project {
+/** A product I founded, shown with a screenshot on the home page. */
+export interface Product {
   name: string;
   kind: string;
-  description: string;
+  summary: string;
   highlights: string[];
   stack: string[];
   role: string;
-  /** Leave out for internal work that has no public link. */
-  link?: Link;
-  /** Screenshot imported at the top of profile.ts. Leave out to show a text card. */
-  image?: { src: ImageMetadata; alt: string };
-  /** Featured projects get the large, full-width card. */
-  featured?: boolean;
+  link: Link;
+  image: { src: ImageMetadata; alt: string };
 }
 
-export interface RoleEntry {
+/** One module card on the /work page. */
+export interface Module {
+  kind: string;
+  name: string;
+  summary: string;
+  points: string[];
+  tags: string[];
+}
+
+/** A case study. Each one gets its own page at /case-studies/<slug>/. */
+export interface CaseStudy {
+  slug: string;
+  title: string;
+  /** One or two sentences: shown on the home tile and under the page title. */
+  summary: string;
+  /** The number shown on the home tile. */
+  headline: Stat;
+  /** Two or three numbers shown in the green band on the case-study page. */
+  figures: Stat[];
+  problem: string;
+  found: string[];
+  did: string[];
+  result: string;
+  tags: string[];
+}
+
+export interface TitledItem {
+  title: string;
+  body: string;
+}
+
+export interface Experience {
   title: string;
   company: string;
   location: string;
   start: string;
   end: string;
-}
-
-export interface Experience {
-  /** One entry normally; several when one set of bullets covers more than one job. */
-  roles: RoleEntry[];
-  summary?: string;
-  groups: { heading?: string; points: string[] }[];
+  /** Extra roles covered by the same bullets (e.g. two QA jobs). */
+  alsoAs?: { title: string; company: string; location: string; start: string; end: string }[];
+  points: string[];
 }
 
 export interface SkillGroup {
@@ -61,7 +85,8 @@ export interface Credential {
   note?: string;
 }
 
-export interface SectionIntro {
+export interface PageText {
+  eyebrow: string;
   title: string;
   lede?: string;
 }
@@ -69,7 +94,6 @@ export interface SectionIntro {
 export interface Profile {
   name: string;
   fullName: string;
-  initials: string;
   role: string;
   location: string;
   headline: string;
@@ -77,17 +101,33 @@ export interface Profile {
   /** Path to a PDF in /public, e.g. '/abdallah-nezar-cv.pdf'. Leave out to hide the Download CV button. */
   cvUrl?: string;
   seo: { title: string; description: string };
-  /** Heading and intro line shown at the top of each section. */
-  sections: {
-    about: SectionIntro;
-    work: SectionIntro;
-    experience: SectionIntro;
-    skills: SectionIntro;
-    education: SectionIntro;
-  };
   stats: Stat[];
-  pillars: Pillar[];
-  projects: Project[];
+  glanceFoot: string;
+
+  home: {
+    about: PageText;
+    pillars: Pillar[];
+    work: PageText;
+    experience: PageText;
+    skills: PageText;
+  };
+
+  products: Product[];
+
+  /** The /work page. */
+  erp: {
+    seo: { title: string; description: string };
+    page: PageText;
+    /** Shown on the home-page tile that links to /work. */
+    tile: { kind: string; title: string; summary: string; figures: Stat[] };
+    figures: Stat[];
+    modules: Module[];
+    finance: { title: string; lede: string; items: TitledItem[] };
+    process: { title: string; lede: string; steps: TitledItem[]; closing: string };
+  };
+
+  caseStudies: CaseStudy[];
+
   experience: Experience[];
   skills: SkillGroup[];
   education: Credential[];

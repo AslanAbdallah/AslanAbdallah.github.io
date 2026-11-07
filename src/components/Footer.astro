@@ -4,7 +4,7 @@ import { profile } from '../data/profile';
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
+<footer class="site-footer band">
   <div class="container row">
     <p>© {year} {profile.fullName}</p>
     <a href="#top">Back to top ↑</a>
@@ -13,8 +13,8 @@ const year = new Date().getFullYear();
 
 <style>
   .site-footer {
+    --paper: var(--forest-deep);
     border-top: 1px solid var(--rule);
-    background: var(--paper-raised);
   }
 
   .row {

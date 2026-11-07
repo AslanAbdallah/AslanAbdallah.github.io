@@ -1,12 +1,17 @@
 ---
 import { profile } from '../data/profile';
 
+interface Props {
+  eyebrow?: string;
+}
+
+const { eyebrow = 'Contact' } = Astro.props;
 const { contact } = profile;
 ---
 
-<section class="contact" id="contact" aria-labelledby="contact-title">
+<section class="contact band" id="contact" aria-labelledby="contact-title">
   <div class="container">
-    <p class="eyebrow">06 — Contact</p>
+    <p class="eyebrow">{eyebrow}</p>
     <h2 id="contact-title">{contact.heading}</h2>
     <p class="body">{contact.body}</p>
 
@@ -30,8 +35,6 @@ const { contact } = profile;
 <style>
   .contact {
     padding-block: var(--section-space);
-    border-top: 1px solid var(--rule);
-    background: var(--paper-raised);
   }
 
   h2 {

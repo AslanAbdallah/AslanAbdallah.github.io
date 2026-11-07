@@ -1,0 +1,114 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import GroupHead from '../components/work/GroupHead.astro';
+import ErpCard from '../components/work/ErpCard.astro';
+import CaseTile from '../components/work/CaseTile.astro';
+import Process from '../components/Process.astro';
+import Contact from '../components/Contact.astro';
+import { profile } from '../data/profile';
+
+const { erp, caseStudies } = profile;
+const role = 'Owner — designed, built and run in-house';
+---
+
+<Layout title={erp.seo.title} description={erp.seo.description}>
+  <PageHeader {...erp.page} figures={erp.figures} />
+
+  <section class="section" id="modules" aria-labelledby="modules-title">
+    <div class="container">
+      <h2 class="visually-hidden" id="modules-title">Modules</h2>
+      <GroupHead id="modules-list" title="Modules I built or rebuilt" />
+      <div class="grid">
+        {erp.modules.map((m) => <ErpCard project={m} role={role} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section sunk" id="finance" aria-labelledby="finance-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Finance</p>
+        <h2 class="section-title" id="finance-title">{erp.finance.title}</h2>
+        <p class="lede">{erp.finance.lede}</p>
+      </header>
+      <ul class="finance">
+        {
+          erp.finance.items.map((item) => (
+            <li>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Process />
+
+  <section class="section" id="case-studies" aria-labelledby="cases-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Case studies</p>
+        <h2 class="section-title" id="cases-title">Three problems from the live system</h2>
+      </header>
+      <div class="cases">
+        {caseStudies.map((study, i) => <CaseTile study={study} number={i + 1} level={3} />)}
+      </div>
+    </div>
+  </section>
+
+  <Contact />
+</Layout>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .sunk {
+    background: var(--paper-sunk);
+  }
+
+  .finance {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .finance li {
+    padding-top: 1.1rem;
+    border-top: 2px solid var(--accent);
+  }
+
+  .finance h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .finance p {
+    color: var(--ink-2);
+  }
+
+  .cases {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 960px) {
+    .cases {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .grid,
+    .finance {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

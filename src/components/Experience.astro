@@ -4,16 +4,20 @@ import SectionHead from './SectionHead.astro';
 
 const yearOf = (date: string) => date.match(/\d{4}/)?.[0] ?? date;
 
-const entries = profile.experience.map((entry) => {
-  const first = entry.roles[entry.roles.length - 1];
-  const last = entry.roles[0];
-  return { ...entry, span: `${yearOf(first.start)} — ${last.end === 'Present' ? 'now' : yearOf(last.end)}` };
+const entries = profile.experience.map((job) => {
+  const roles = [job, ...(job.alsoAs ?? [])];
+  const first = roles[roles.length - 1];
+  return {
+    ...job,
+    roles,
+    span: `${yearOf(first.start)} — ${job.end === 'Present' ? 'now' : yearOf(job.end)}`,
+  };
 });
 ---
 
 <section class="section" id="experience" aria-labelledby="experience-title">
   <div class="container">
-    <SectionHead id="experience-title" eyebrow="03 — Experience" {...profile.sections.experience} />
+    <SectionHead id="experience-title" {...profile.home.experience} />
 
     <ol class="timeline">
       {
@@ -21,30 +25,21 @@ const entries = profile.experience.map((entry) => {
           <li class="entry">
             <p class="span">{entry.span}</p>
             <div class="entry-body">
-              {entry.roles.map((role) => (
-                <div class="role">
-                  <h3>{role.title}</h3>
-                  <p class="where">
-                    {role.company} · {role.location}
-                  </p>
-                  <p class="dates">
-                    {role.start} – {role.end}
-                  </p>
-                </div>
-              ))}
-              {entry.summary && <p class="summary">{entry.summary}</p>}
-              <div class="groups">
-                {entry.groups.map((group) => (
-                  <div class="group">
-                    {group.heading && <h4>{group.heading}</h4>}
-                    <ul class="dash-list">
-                      {group.points.map((point) => (
-                        <li>{point}</li>
-                      ))}
-                    </ul>
+              <div class="roles">
+                {entry.roles.map((role) => (
+                  <div class="role">
+                    <h3>{role.title}</h3>
+                    <p class="where">
+                      {role.company} · {role.location} · <span class="dates">{role.start} – {role.end}</span>
+                    </p>
                   </div>
                 ))}
               </div>
+              <ul class="dash-list">
+                {entry.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
             </div>
           </li>
         ))
@@ -58,15 +53,13 @@ const entries = profile.experience.map((entry) => {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: 0;
   }
 
   .entry {
     display: grid;
     grid-template-columns: 11rem minmax(0, 1fr);
     gap: 2rem;
-    padding-block: 2.5rem;
+    padding-block: 2.25rem;
     border-top: 1px solid var(--rule);
   }
 
@@ -87,43 +80,23 @@ const entries = profile.experience.map((entry) => {
     max-width: 48rem;
   }
 
-  .role + .role {
-    padding-top: 1.25rem;
-    border-top: 1px dashed var(--rule);
+  .roles {
+    display: grid;
+    gap: 0.9rem;
   }
 
   h3 {
-    font-size: 1.625rem;
+    font-size: 1.5rem;
   }
 
   .where {
-    margin-top: 0.35rem;
+    margin-top: 0.3rem;
     color: var(--ink);
+    font-size: 0.975rem;
   }
 
   .dates {
-    font-size: 0.9rem;
     color: var(--ink-3);
-  }
-
-  .summary {
-    color: var(--ink-2);
-    font-style: italic;
-    font-family: var(--serif);
-    font-size: 1.125rem;
-  }
-
-  .groups {
-    display: grid;
-    gap: 1.5rem;
-  }
-
-  h4 {
-    margin: 0 0 0.6rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--ink);
   }
 
   .dash-list {
@@ -133,7 +106,7 @@ const entries = profile.experience.map((entry) => {
   @media (max-width: 720px) {
     .entry {
       grid-template-columns: minmax(0, 1fr);
-      gap: 1rem;
+      gap: 0.75rem;
     }
   }
 </style>

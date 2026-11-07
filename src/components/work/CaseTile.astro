@@ -1,0 +1,122 @@
+---
+import type { CaseStudy } from '../../data/types';
+
+interface Props {
+  study: CaseStudy;
+  number: number;
+  /** Heading level for the title, so headings stay in order wherever the tile is used. */
+  level?: 3 | 4;
+}
+
+const { study, number, level = 4 } = Astro.props;
+const Heading = level === 3 ? 'h3' : 'h4';
+const href = `/case-studies/${study.slug}/`;
+---
+
+<article class="tile">
+  <p class="label">Case study {String(number).padStart(2, '0')}</p>
+  <p class="figure">
+    <span class="value">{study.headline.value}</span>
+    <span class="figure-label">{study.headline.label}</span>
+  </p>
+  <Heading class="title"><a href={href}>{study.title}</a></Heading>
+  <p class="summary">{study.summary}</p>
+  <p class="more" aria-hidden="true">Read the case study <span>→</span></p>
+</article>
+
+<style>
+  .tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: clamp(1.5rem, 3vw, 1.85rem);
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--accent);
+    border-radius: 0 0 var(--radius) var(--radius);
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -22px rgba(15, 42, 36, 0.55);
+  }
+
+  .tile:focus-within {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .figure {
+    display: grid;
+    gap: 0.25rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .value {
+    font-family: var(--serif);
+    font-size: clamp(1.9rem, 3vw, 2.3rem);
+    line-height: 1.05;
+    color: var(--accent);
+  }
+
+  .figure-label {
+    font-size: 0.875rem;
+    color: var(--ink-3);
+  }
+
+  .title {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+
+  /* The title link covers the whole tile, so the tile is one click target. */
+  .title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .title a:focus-visible {
+    outline: none;
+  }
+
+  .summary {
+    color: var(--ink-2);
+    font-size: 0.95rem;
+  }
+
+  .more {
+    margin-top: auto;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .more span {
+    display: inline-block;
+    transition: transform 0.15s ease;
+  }
+
+  .tile:hover .more span {
+    transform: translateX(3px);
+  }
+</style>

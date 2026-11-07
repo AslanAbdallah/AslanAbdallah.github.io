@@ -1,0 +1,63 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  index?: string;
+  intro?: string;
+}
+
+const { id, index, title, intro } = Astro.props;
+---
+
+<header class="group-head" id={id}>
+  <h3>{index && <span class="index" aria-hidden="true">{index}</span>}{title}</h3>
+  {intro && <p class="intro">{intro}</p>}
+</header>
+
+<style>
+  .group-head {
+    margin-bottom: clamp(1.5rem, 3.5vw, 2rem);
+    scroll-margin-top: 5rem;
+  }
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule-strong);
+  }
+
+  .index {
+    display: inline-grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper-raised);
+    font-size: 0.75rem;
+    letter-spacing: 0;
+  }
+
+  .intro {
+    margin-top: 1rem;
+    max-width: 44rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.2rem, 2.2vw, 1.4rem);
+    line-height: 1.4;
+    color: var(--ink);
+  }
+</style>

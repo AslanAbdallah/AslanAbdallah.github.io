@@ -1,0 +1,128 @@
+---
+import { profile } from '../data/profile';
+import SectionHead from './SectionHead.astro';
+
+const learning = [...profile.education, ...profile.certifications];
+---
+
+<section class="section sunk" id="skills" aria-labelledby="skills-title">
+  <div class="container">
+    <SectionHead id="skills-title" {...profile.home.skills} />
+
+    <div class="columns">
+      <div class="skills">
+        {
+          profile.skills.map((group) => (
+            <div class="group">
+              <h3>{group.name}</h3>
+              <ul class="tag-list">
+                {group.items.map((item) => (
+                  <li class="tag">{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="learning" id="education">
+        <h3>Education & certifications</h3>
+        <ul>
+          {
+            learning.map((item) => (
+              <li>
+                <span class="year">{item.year}</span>
+                <span>
+                  <span class="title">{item.title}</span>
+                  <span class="issuer">
+                    {item.issuer}
+                    {item.note && ` · ${item.note}`}
+                  </span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sunk {
+    background: var(--paper-sunk);
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .skills {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .group {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    padding-top: 0.35rem;
+  }
+
+  .learning h3 {
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .learning li {
+    display: grid;
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+
+  .year {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--accent);
+  }
+
+  .title {
+    display: block;
+    font-family: var(--serif);
+    font-size: 1.125rem;
+    line-height: 1.3;
+  }
+
+  .issuer {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--ink-3);
+  }
+
+  @media (max-width: 900px) {
+    .columns {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .group {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.6rem;
+    }
+  }
+</style>

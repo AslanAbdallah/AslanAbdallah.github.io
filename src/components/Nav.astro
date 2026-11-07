@@ -1,17 +1,21 @@
 ---
 import { profile } from '../data/profile';
 
+// Links work from every page: "/#…" goes to a section of the home page.
 const links = [
-  { label: 'About', href: '#about' },
-  { label: 'Work', href: '#work' },
-  { label: 'Experience', href: '#experience' },
+  { label: 'Work', href: '/work/' },
+  { label: 'Case studies', href: '/#case-studies' },
+  { label: 'Experience', href: '/#experience' },
   { label: 'Contact', href: '#contact' },
 ];
+const path = Astro.url.pathname;
+const isCurrent = (href: string) =>
+  (href === '/work/' && path.startsWith('/work')) || (href === '/#case-studies' && path.startsWith('/case-studies'));
 ---
 
 <header class="site-header">
   <div class="container bar">
-    <a class="wordmark" href="#top" title="Back to top">
+    <a class="wordmark" href="/" title="Home">
       {profile.name.split(' ')[0].charAt(0)}. {profile.name.split(' ').slice(1).join(' ')}
     </a>
 
@@ -25,7 +29,9 @@ const links = [
         {
           links.map((link) => (
             <li>
-              <a href={link.href}>{link.label}</a>
+              <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+                {link.label}
+              </a>
             </li>
           ))
         }
@@ -57,8 +63,7 @@ const links = [
     position: sticky;
     top: 0;
     z-index: 50;
-    background: color-mix(in srgb, var(--paper) 92%, transparent);
-    backdrop-filter: saturate(1.2) blur(8px);
+    background: var(--paper);
     border-bottom: 1px solid var(--rule);
   }
 
@@ -88,7 +93,8 @@ const links = [
     text-decoration: none;
   }
 
-  .nav a:hover {
+  .nav a:hover,
+  .nav a[aria-current='page'] {
     color: var(--accent);
   }
 

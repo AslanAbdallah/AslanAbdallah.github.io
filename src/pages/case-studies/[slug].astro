@@ -1,0 +1,206 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Contact from '../../components/Contact.astro';
+import { profile } from '../../data/profile';
+
+export const getStaticPaths = (() =>
+  profile.caseStudies.map((study, i) => ({
+    params: { slug: study.slug },
+    props: { index: i },
+  }))) satisfies GetStaticPaths;
+
+const { index } = Astro.props;
+const all = profile.caseStudies;
+const study = all[index];
+const next = all[(index + 1) % all.length];
+const number = String(index + 1).padStart(2, '0');
+const total = String(all.length).padStart(2, '0');
+---
+
+<Layout title={`${study.title} — Abdallah Nezar`} description={study.summary}>
+  <PageHeader
+    eyebrow={`Case study ${number} of ${total}`}
+    title={study.title}
+    lede={study.summary}
+    figures={study.figures}
+    back={{ label: 'All case studies', href: '/#case-studies' }}
+  />
+
+  <article class="section story" aria-labelledby="story-title">
+    <div class="container narrow">
+      <h2 class="visually-hidden" id="story-title">The story</h2>
+
+      <section class="part">
+        <p class="step">01</p>
+        <div>
+          <h3>The problem</h3>
+          <p class="problem">{study.problem}</p>
+        </div>
+      </section>
+
+      <section class="part">
+        <p class="step">02</p>
+        <div>
+          <h3>What I found</h3>
+          <ul class="dash-list">
+            {study.found.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section class="part">
+        <p class="step">03</p>
+        <div>
+          <h3>What I did</h3>
+          <ul class="dash-list">
+            {study.did.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section class="result">
+        <h3>Result</h3>
+        <p>{study.result}</p>
+      </section>
+
+      <ul class="tag-list" aria-label="Tools and skills">
+        {study.tags.map((t) => <li class="tag">{t}</li>)}
+      </ul>
+
+      <nav class="next" aria-label="More case studies">
+        <a href={`/case-studies/${next.slug}/`}>
+          <span class="next-label">Next case study</span>
+          <span class="next-title">{next.title} <span aria-hidden="true">→</span></span>
+        </a>
+        <a href="/work/">
+          <span class="next-label">See the whole system</span>
+          <span class="next-title">The ERP I run <span aria-hidden="true">→</span></span>
+        </a>
+      </nav>
+    </div>
+  </article>
+
+  <Contact />
+</Layout>
+
+<style>
+  /* Keep the story left-aligned with the title, but at a comfortable reading width. */
+  .narrow > * {
+    max-width: 52rem;
+  }
+
+  .story {
+    border-top: 0;
+  }
+
+  .part {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: 1.75rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .part:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .step {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    color: var(--accent);
+    line-height: 1.6;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    padding-top: 0.45rem;
+  }
+
+  .problem {
+    font-family: var(--serif);
+    font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+    line-height: 1.45;
+    color: var(--ink);
+  }
+
+  .dash-list {
+    gap: 0.8rem;
+  }
+
+  .result {
+    margin-block: 1.5rem 2rem;
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+    background: var(--highlight);
+    border-radius: var(--radius);
+  }
+
+  .result h3,
+  .result p {
+    color: var(--highlight-ink);
+  }
+
+  .result h3 {
+    padding-top: 0;
+  }
+
+  .result p {
+    font-family: var(--serif);
+    font-size: clamp(1.35rem, 2.8vw, 1.75rem);
+    line-height: 1.35;
+  }
+
+  .next {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: clamp(2.5rem, 6vw, 3.5rem);
+  }
+
+  .next a {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .next a:hover {
+    border-color: var(--accent);
+  }
+
+  .next-label {
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+  }
+
+  .next-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  @media (max-width: 640px) {
+    .part {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.25rem;
+    }
+
+    .next {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

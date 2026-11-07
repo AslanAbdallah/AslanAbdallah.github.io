@@ -1,0 +1,82 @@
+---
+import type { Module } from '../../data/types';
+
+interface Props {
+  project: Module;
+  role: string;
+}
+
+const { project, role } = Astro.props;
+const isTestCount = (tag: string) => /\btests?$/.test(tag);
+---
+
+<article class="card">
+  <p class="kind">{project.kind}</p>
+  <h4>{project.name}</h4>
+  <p class="summary">{project.summary}</p>
+  <ul class="dash-list">
+    {project.points.map((point) => <li>{point}</li>)}
+  </ul>
+  <ul class="tag-list" aria-label="Built with">
+    {project.tags.map((tag) => <li class:list={['tag', { 'tag-accent': isTestCount(tag) }]}>{tag}</li>)}
+  </ul>
+  <div class="foot">
+    <p>{role}</p>
+    <p class="private">Internal — not public</p>
+  </div>
+</article>
+
+<style>
+  .card {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    grid-template-rows: auto auto auto 1fr auto auto;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+
+  .kind {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+
+  h4 {
+    margin: -0.4rem 0 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .summary {
+    color: var(--ink);
+  }
+
+  .dash-list {
+    font-size: 0.95rem;
+  }
+
+  .tag-accent {
+    background: var(--accent-tint);
+    border-color: transparent;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.875rem;
+    color: var(--ink-3);
+  }
+</style>

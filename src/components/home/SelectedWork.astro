@@ -1,0 +1,260 @@
+---
+import { Image } from 'astro:assets';
+import { profile } from '../../data/profile';
+import SectionHead from '../SectionHead.astro';
+import GroupHead from '../work/GroupHead.astro';
+import CaseTile from '../work/CaseTile.astro';
+
+const { products, erp, caseStudies } = profile;
+---
+
+<section class="section" id="selected-work" aria-labelledby="work-title">
+  <div class="container">
+    <SectionHead id="work-title" {...profile.home.work} />
+
+    <GroupHead id="products" title="Products I founded" />
+    <div class="products">
+      {
+        products.map((p) => (
+          <article class="product">
+            <div class="shot">
+              <Image src={p.image.src} alt={p.image.alt} widths={[480, 720, 960]} sizes="(max-width: 900px) 100vw, 540px" loading="lazy" />
+            </div>
+            <div class="product-body">
+              <p class="kind">{p.kind}</p>
+              <h4>{p.name}</h4>
+              <p class="summary">{p.summary}</p>
+              <ul class="dash-list">
+                {p.highlights.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+              <ul class="tag-list" aria-label="Built with">
+                {p.stack.map((s) => (
+                  <li class="tag">{s}</li>
+                ))}
+              </ul>
+              <div class="product-foot">
+                <p>{p.role}</p>
+                <a href={p.link.href} target="_blank" rel="noopener noreferrer">
+                  Visit {p.link.label} <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <GroupHead id="erp" title="The ERP I run" />
+    <article class="erp band">
+      <div class="erp-text">
+        <p class="kind">{erp.tile.kind}</p>
+        <h4><a href="/work/">{erp.tile.title}</a></h4>
+        <p class="summary">{erp.tile.summary}</p>
+        <p class="more" aria-hidden="true">See the modules, the finance work and how I ship <span>→</span></p>
+      </div>
+      <dl class="erp-figures">
+        {
+          erp.tile.figures.map((f) => (
+            <div>
+              <dt>{f.label}</dt>
+              <dd>{f.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </article>
+
+    <GroupHead id="case-studies" title="Case studies" />
+    <div class="cases">
+      {caseStudies.map((study, i) => <CaseTile study={study} number={i + 1} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .products {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-bottom: clamp(3rem, 7vw, 4.5rem);
+  }
+
+  .product {
+    display: flex;
+    flex-direction: column;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .shot {
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper-sunk);
+  }
+
+  .shot :global(img) {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .product-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    flex: 1;
+    padding: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .kind {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+
+  .product h4,
+  .erp h4 {
+    margin: -0.4rem 0 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 3vw, 2.1rem);
+    line-height: 1.15;
+  }
+
+  .summary {
+    color: var(--ink-2);
+  }
+
+  .dash-list {
+    font-size: 0.95rem;
+  }
+
+  .product-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.9rem;
+    color: var(--ink-3);
+  }
+
+  .product-foot a {
+    font-weight: 500;
+  }
+
+  /* The ERP tile: a dark card linking to /work */
+  .erp {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    border-radius: 14px;
+    margin-bottom: clamp(3rem, 7vw, 4.5rem);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .erp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 36px -24px rgba(15, 42, 36, 0.7);
+  }
+
+  .erp:focus-within {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .erp-text {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .erp h4 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .erp h4 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .erp h4 a:focus-visible {
+    outline: none;
+  }
+
+  .more {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .more span {
+    display: inline-block;
+    transition: transform 0.15s ease;
+  }
+
+  .erp:hover .more span {
+    transform: translateX(3px);
+  }
+
+  .erp-figures {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+  }
+
+  .erp-figures div {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--accent);
+  }
+
+  .erp-figures dd {
+    order: -1;
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(2.25rem, 4vw, 3rem);
+    line-height: 1;
+  }
+
+  .erp-figures dt {
+    margin-top: 0.3rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+
+  .cases {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 960px) {
+    .cases {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .products,
+    .erp {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .erp-figures {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

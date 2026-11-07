@@ -3,46 +3,59 @@ import { profile } from '../data/profile';
 ---
 
 <section class="hero" id="top" aria-labelledby="hero-title">
-  <div class="container">
-    <p class="meta">{profile.role} · {profile.location}</p>
-    <h1 id="hero-title">{profile.name}</h1>
-    <p class="headline">{profile.headline}</p>
-    <p class="intro">{profile.intro}</p>
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <p class="meta">{profile.role} · {profile.location}</p>
+      <h1 id="hero-title">{profile.name}</h1>
+      <p class="headline">{profile.headline}</p>
+      <p class="intro">{profile.intro}</p>
 
-    <div class="actions">
-      <a class="btn btn-primary" href="#work">
-        View work
-        <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" /></svg>
-      </a>
-      {
-        profile.cvUrl ? (
-          <a class="btn btn-secondary" href={profile.cvUrl} download>
-            Download CV
-          </a>
-        ) : (
-          <a class="btn btn-secondary" href="#contact">
-            Get in touch
-          </a>
-        )
-      }
+      <div class="actions">
+        <a class="btn btn-primary" href="#selected-work">
+          View work
+          <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" /></svg>
+        </a>
+        {
+          profile.cvUrl ? (
+            <a class="btn btn-secondary" href={profile.cvUrl} download>
+              Download CV
+            </a>
+          ) : (
+            <a class="btn btn-secondary" href="#contact">
+              Get in touch
+            </a>
+          )
+        }
+      </div>
     </div>
 
-    <dl class="stats">
-      {
-        profile.stats.map((stat) => (
-          <div class="stat">
-            <dt>{stat.label}</dt>
-            <dd>{stat.value}</dd>
-          </div>
-        ))
-      }
-    </dl>
+    <aside class="glance band" aria-labelledby="glance-title">
+      <p class="glance-title" id="glance-title">At a glance</p>
+      <dl class="stats">
+        {
+          profile.stats.map((stat) => (
+            <div class="stat">
+              <dt>{stat.label}</dt>
+              <dd>{stat.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="glance-foot">{profile.glanceFoot}</p>
+    </aside>
   </div>
 </section>
 
 <style>
   .hero {
-    padding-block: clamp(4rem, 11vw, 8.5rem) clamp(3.5rem, 7vw, 5.5rem);
+    padding-block: clamp(3.5rem, 9vw, 7rem) clamp(3.5rem, 8vw, 6rem);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
   }
 
   .meta {
@@ -52,7 +65,7 @@ import { profile } from '../data/profile';
   }
 
   h1 {
-    font-size: clamp(3rem, 8vw, 5.75rem);
+    font-size: clamp(3rem, 7.5vw, 5.5rem);
     line-height: 1;
     letter-spacing: -0.03em;
   }
@@ -60,16 +73,16 @@ import { profile } from '../data/profile';
   .headline {
     font-family: var(--serif);
     font-style: italic;
-    font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+    font-size: clamp(1.5rem, 3vw, 2.125rem);
     line-height: 1.25;
     color: var(--accent);
     margin-top: 1.25rem;
-    max-width: 22em;
+    max-width: 20em;
   }
 
   .intro {
-    margin-top: 1.75rem;
-    max-width: 40rem;
+    margin-top: 1.5rem;
+    max-width: 38rem;
     font-size: 1.125rem;
     color: var(--ink-2);
   }
@@ -81,41 +94,68 @@ import { profile } from '../data/profile';
     margin-top: 2.25rem;
   }
 
+  /* The "at a glance" panel */
+  .glance {
+    border-radius: 14px;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .glance-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
   .stats {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.5rem;
-    margin: clamp(3.5rem, 7vw, 5rem) 0 0;
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--rule);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 1.25rem 0 0;
   }
 
   .stat {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     gap: 0.35rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .stat:nth-child(odd) {
+    padding-right: 1rem;
+  }
+
+  .stat:nth-child(even) {
+    padding-left: 1rem;
+    border-left: 1px solid var(--rule);
   }
 
   .stat dd {
     order: -1;
     margin: 0;
     font-family: var(--serif);
-    font-size: clamp(1.75rem, 3vw, 2.25rem);
-    line-height: 1.1;
-    color: var(--accent);
+    font-size: clamp(2rem, 3.4vw, 2.6rem);
+    line-height: 1;
+    color: var(--ink);
   }
 
   .stat dt {
-    font-size: 0.9rem;
-    color: var(--ink-3);
+    font-size: 0.875rem;
+    color: var(--ink-2);
     line-height: 1.4;
   }
 
-  @media (max-width: 820px) {
-    .stats {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      row-gap: 2rem;
+  .glance-foot {
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

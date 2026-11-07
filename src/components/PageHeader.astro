@@ -1,0 +1,102 @@
+---
+import type { Stat } from '../data/types';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lede?: string;
+  figures?: Stat[];
+  back?: { label: string; href: string };
+}
+
+const { eyebrow, title, lede, figures = [], back = { label: 'Home', href: '/' } } = Astro.props;
+---
+
+<header class="page-header" id="top">
+  <div class="container">
+    <a class="back" href={back.href}><span aria-hidden="true">←</span> {back.label}</a>
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{title}</h1>
+    {lede && <p class="lede">{lede}</p>}
+  </div>
+  {
+    figures.length > 0 && (
+      <div class="figures band">
+        <dl class="container">
+          {figures.map((f) => (
+            <div>
+              <dt>{f.label}</dt>
+              <dd>{f.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    )
+  }
+</header>
+
+<style>
+  .page-header > .container {
+    padding-block: clamp(2.5rem, 7vw, 5rem) clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .back {
+    display: inline-flex;
+    gap: 0.4rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+
+  .back:hover {
+    color: var(--accent);
+  }
+
+  h1 {
+    margin-top: 0.75rem;
+    max-width: 18em;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .lede {
+    margin-top: 1.25rem;
+    max-width: 42rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+    line-height: 1.4;
+    color: var(--accent);
+  }
+
+  .figures dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    margin: 0 auto;
+    padding-block: clamp(1.75rem, 4vw, 2.5rem);
+    gap: 1.5rem;
+  }
+
+  .figures div {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--accent);
+  }
+
+  .figures dd {
+    order: -1;
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    line-height: 1.05;
+  }
+
+  .figures dt {
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+</style>

@@ -1,0 +1,117 @@
+---
+import { profile } from '../data/profile';
+import SectionHead from './SectionHead.astro';
+
+const { title, lede, steps, closing } = profile.erp.process;
+---
+
+<section class="section band" id="how-i-work" aria-labelledby="process-title">
+  <div class="container">
+    <SectionHead id="process-title" eyebrow="How I work" title={title} lede={lede} />
+
+    <ol class="steps">
+      {
+        steps.map((step, i) => (
+          <li class="step">
+            <span class="number" aria-hidden="true">
+              {i + 1}
+            </span>
+            <p>
+              <strong>{step.title}</strong> {step.body}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="closing">{closing}</p>
+  </div>
+</section>
+
+<style>
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+    counter-reset: none;
+  }
+
+  .step {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: 1.5rem 1.25rem 1.75rem;
+    background: var(--paper-raised);
+    border-radius: var(--radius);
+  }
+
+  /* A thin line joining the steps on wide screens */
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 2.6rem;
+    right: -1rem;
+    width: 1rem;
+    height: 1px;
+    background: var(--rule-strong);
+  }
+
+  .number {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    font-family: var(--serif);
+    font-size: 1.125rem;
+    color: var(--accent);
+  }
+
+  .step p {
+    color: var(--ink-2);
+    font-size: 0.975rem;
+  }
+
+  .step strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  .closing {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    max-width: 40rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+    line-height: 1.35;
+    color: var(--ink);
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  @media (max-width: 1000px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .step:not(:last-child)::after {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
