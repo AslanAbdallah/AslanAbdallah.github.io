@@ -38,7 +38,8 @@ export const profile: Profile = {
     { value: '2,000+', label: 'automated tests behind the apps I run' },
     { value: '~40', label: 'custom Odoo modules I own and maintain' },
   ],
-  glanceFoot: 'Daily management P&L · Odoo 18 Enterprise · Amman, Jordan',
+  // The case study shown beside the name on the home page (its slug).
+  featuredCase: 'till-speed',
 
   // ── Home page ──────────────────────────────────────────────────────────────
   home: {

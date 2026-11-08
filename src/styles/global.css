@@ -1,23 +1,25 @@
 /* Design tokens — change the look of the whole site from here. */
 :root {
-  --paper: #f3eee4;
-  --paper-raised: #fbf8f2;
-  --paper-sunk: #ebe4d6;
+  --paper: #f7f1e3;
+  --paper-raised: #fcf8ef;
+  --paper-sunk: #eee6d3;
   --ink: #23221f;
   --ink-2: #4a4945;
   --ink-3: #615e57;
   --rule: #d8d0bf;
   --rule-strong: #b9b09c;
-  --accent: #085041;
-  --accent-hover: #0f6e56;
-  --accent-tint: #dcebe3;
+  --accent: #666a47;
+  /* The main colour as chosen. Large text and decoration only: too faint for small text. */
+  --accent-large: #787d54;
+  --accent-hover: #4f5336;
+  --accent-tint: #ecebdc;
   --highlight: #f6e7c8;
   --highlight-ink: #5c3a08;
 
   /* Deep green used for the full-width bands. */
-  --forest: #0f2a24;
-  --forest-raised: #163a32;
-  --forest-deep: #0a1f1a;
+  --forest: #363826;
+  --forest-raised: #41442e;
+  --forest-deep: #2b2d1e;
 
   --serif: var(--font-serif), Georgia, serif;
   --sans: var(--font-sans), system-ui, sans-serif;
@@ -126,21 +128,21 @@ img {
   --paper-raised: var(--forest-raised);
   --paper-sunk: var(--forest-deep);
   --ink: #f3eee4;
-  --ink-2: #cfd9d3;
-  --ink-3: #a7b8b0;
+  --ink-2: #d9d8c4;
+  --ink-3: #b3b39c;
   --rule: rgba(243, 238, 228, 0.16);
   --rule-strong: rgba(243, 238, 228, 0.34);
-  --accent: #7fd8b8;
-  --accent-hover: #a9e7d0;
-  --accent-tint: rgba(127, 216, 184, 0.14);
+  --accent: #c9cbbb;
+  --accent-hover: #dfe0d3;
+  --accent-tint: rgba(201, 203, 187, 0.14);
   background: var(--paper);
   color: var(--ink);
   border-top: 0;
 }
 
 .band ::selection {
-  background: #7fd8b8;
-  color: #0f2a24;
+  background: #c9cbbb;
+  color: #363826;
 }
 
 /* A slightly darker paper panel used to group content inside a light section. */

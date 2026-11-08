@@ -102,7 +102,8 @@ export interface Profile {
   cvUrl?: string;
   seo: { title: string; description: string };
   stats: Stat[];
-  glanceFoot: string;
+  /** Slug of the case study shown beside the name on the home page. */
+  featuredCase: string;
 
   home: {
     about: PageText;

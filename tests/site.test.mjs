@@ -41,6 +41,18 @@ test('home shows the name and headline', () => {
   assert.match(home, /I run finance and IT for a multi-brand restaurant group\./);
 });
 
+test('the hero features one case study, with the four numbers in a strip below', () => {
+  const hero = home.slice(home.indexOf('id="top"'), home.indexOf('id="about"'));
+  const featured = hero.match(/<aside class="featured[\s\S]*?<\/aside>/)?.[0] ?? '';
+  const link = featured.match(/href="(\/case-studies\/[^"#]+)"/)?.[1];
+  assert.ok(link && pages.has(link), 'the featured result must link to a case study page');
+  assert.match(textOf(featured), /599 → 48 ms/);
+  const numbers = [...hero.matchAll(/<dd[^>]*>([^<]+)<\/dd>/g)].map((m) => m[1].trim());
+  assert.deepEqual(numbers, ['2,500+', '8,000+', '2,000+', '~40']);
+  assert.ok(hero.indexOf('class="numbers') > hero.indexOf('<aside class="featured'), 'numbers strip must sit below the hero');
+  assert.doesNotMatch(textOf(hero), /At a glance/i);
+});
+
 test('home sections are in order and numbered 01 to 05', () => {
   let last = -1;
   for (const id of ['about', 'selected-work', 'case-studies', 'experience', 'skills', 'contact']) {
