@@ -20,7 +20,8 @@ If an edit has a mistake, such as a misspelled field or a missing comma, the bui
 |---|---|
 | Add a **Download CV** button | Put the PDF in `public/` (e.g. `public/abdallah-nezar-cv.pdf`) and uncomment the `cvUrl` line. |
 | Change a project screenshot | Replace the file in `src/assets/projects/` with the same name. |
-| Add a module card to /work | Copy one block in `erp.modules` and edit it. A tag ending in "tests" is highlighted. |
+| Add a module card to /work | Copy one block in `erp.modules` and edit it. A tag ending in "tests" is highlighted. Optional: `link` (e.g. to its case study) and `role` (a different footer line). |
+| Add a small item under the module cards | Add a line to `erp.alsoBuilt`. |
 | Add a case study | Copy one block in `caseStudies` and give it a new `slug`. Its page (`/case-studies/<slug>/`) and its home-page tile are created automatically. |
 | Add a product with a screenshot | Copy one block in `products` and import its screenshot at the top of the file. |
 | Add a job | Add an entry at the top of `experience`. |
@@ -30,12 +31,18 @@ If an edit has a mistake, such as a misspelled field or a missing comma, the bui
 
 Before publishing new numbers, run `npm run audit`: it lists every number on every page and flags any that aren't on the approved list in `scripts/audit-numbers.mjs`.
 
+## Motion
+
+Sections and cards rise in as they scroll into view, the hero plays in on load, and numbers count up once (the till result counts down, 599 → 48 ms). It's about 1 KB of code in `src/scripts/motion.ts` plus a "Motion" block at the end of `src/styles/global.css`, with no library. Mark an element with `data-reveal`, a list with `data-reveal-group`, or a number with `data-count`.
+
+The page never depends on it: with JavaScript off, or when a visitor's device asks for reduced motion, everything shows at once. A test fails the build if a motion rule could hide content outside those conditions.
+
 ## Pages
 
 | Address | What's on it |
 |---|---|
 | `/` | Opening section, What I do, selected work (products, ERP tile, case-study tiles), experience, skills & learning, contact |
-| `/work/` | The ERP modules, finance work, how I change a live system |
+| `/work/` | A jump menu, then the ERP modules (and "Also built"), finance work, systems & infrastructure, how I change a live system, and the case studies |
 | `/case-studies/<slug>/` | One case study each: problem, what I found, what I did, result |
 
 ## Running it locally

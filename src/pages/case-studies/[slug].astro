@@ -32,7 +32,7 @@ const total = String(all.length).padStart(2, '0');
     <div class="container narrow">
       <h2 class="visually-hidden" id="story-title">The story</h2>
 
-      <section class="part">
+      <section class="part" data-reveal>
         <p class="step">01</p>
         <div>
           <h3>The problem</h3>
@@ -40,7 +40,7 @@ const total = String(all.length).padStart(2, '0');
         </div>
       </section>
 
-      <section class="part">
+      <section class="part" data-reveal>
         <p class="step">02</p>
         <div>
           <h3>What I found</h3>
@@ -50,7 +50,7 @@ const total = String(all.length).padStart(2, '0');
         </div>
       </section>
 
-      <section class="part">
+      <section class="part" data-reveal>
         <p class="step">03</p>
         <div>
           <h3>What I did</h3>
@@ -60,16 +60,16 @@ const total = String(all.length).padStart(2, '0');
         </div>
       </section>
 
-      <section class="result">
+      <section class="result" data-reveal>
         <h3>Result</h3>
         <p>{study.result}</p>
       </section>
 
-      <ul class="tag-list" aria-label="Tools and skills">
+      <ul class="tag-list" aria-label="Tools and skills" data-reveal>
         {study.tags.map((t) => <li class="tag">{t}</li>)}
       </ul>
 
-      <nav class="next" aria-label="More case studies">
+      <nav class="next" aria-label="More case studies" data-reveal-group>
         <a href={`/case-studies/${next.slug}/`}>
           <span class="next-label">Next case study</span>
           <span class="next-title">{next.title} <span aria-hidden="true">→</span></span>
@@ -174,11 +174,12 @@ const total = String(all.length).padStart(2, '0');
     border: 1px solid var(--rule);
     border-radius: var(--radius);
     text-decoration: none;
-    transition: border-color 0.15s ease;
+    transition: border-color 0.2s ease, transform 0.2s ease;
   }
 
   .next a:hover {
     border-color: var(--accent);
+    transform: translateY(-2px);
   }
 
   .next-label {

@@ -19,7 +19,7 @@ const entries = profile.experience.map((job) => {
   <div class="container">
     <SectionHead id="experience-title" {...profile.home.experience} />
 
-    <ol class="timeline">
+    <ol class="timeline" data-reveal-group>
       {
         entries.map((entry) => (
           <li class="entry">

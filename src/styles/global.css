@@ -1,25 +1,25 @@
 /* Design tokens — change the look of the whole site from here. */
 :root {
-  --paper: #f7f1e3;
-  --paper-raised: #fcf8ef;
-  --paper-sunk: #eee6d3;
-  --ink: #23221f;
-  --ink-2: #4a4945;
-  --ink-3: #615e57;
-  --rule: #d8d0bf;
-  --rule-strong: #b9b09c;
-  --accent: #666a47;
-  /* The main colour as chosen. Large text and decoration only: too faint for small text. */
-  --accent-large: #787d54;
-  --accent-hover: #4f5336;
-  --accent-tint: #ecebdc;
+  --paper: #f5f2ec;
+  --paper-raised: #fbf9f5;
+  --paper-sunk: #ebe6dc;
+  --ink: #1a1d24;
+  --ink-2: #454a55;
+  --ink-3: #5f6470;
+  --rule: #dcd6ca;
+  --rule-strong: #bfb7a8;
+  --accent: #1e3a5f;
+  /* The colour of the italic headline under the name. */
+  --accent-large: #1e3a5f;
+  --accent-hover: #2b4f7e;
+  --accent-tint: #e3e8ef;
   --highlight: #f6e7c8;
   --highlight-ink: #5c3a08;
 
-  /* Deep green used for the full-width bands. */
-  --forest: #363826;
-  --forest-raised: #41442e;
-  --forest-deep: #2b2d1e;
+  /* Deep navy used for the full-width bands and dark panels. */
+  --forest: #14223a;
+  --forest-raised: #1d2e4a;
+  --forest-deep: #0e1829;
 
   --serif: var(--font-serif), Georgia, serif;
   --sans: var(--font-sans), system-ui, sans-serif;
@@ -120,29 +120,29 @@ img {
 }
 
 /*
- * A dark green band. It re-defines the colour tokens for everything inside,
+ * A dark navy band. It re-defines the colour tokens for everything inside,
  * so any component placed in a band switches to light-on-dark by itself.
  */
 .band {
   --paper: var(--forest);
   --paper-raised: var(--forest-raised);
   --paper-sunk: var(--forest-deep);
-  --ink: #f3eee4;
-  --ink-2: #d9d8c4;
-  --ink-3: #b3b39c;
+  --ink: #f5f2ec;
+  --ink-2: #d5dae3;
+  --ink-3: #a9b2c2;
   --rule: rgba(243, 238, 228, 0.16);
   --rule-strong: rgba(243, 238, 228, 0.34);
-  --accent: #c9cbbb;
-  --accent-hover: #dfe0d3;
-  --accent-tint: rgba(201, 203, 187, 0.14);
+  --accent: #e3c58f;
+  --accent-hover: #efd8ad;
+  --accent-tint: rgba(227, 197, 143, 0.14);
   background: var(--paper);
   color: var(--ink);
   border-top: 0;
 }
 
 .band ::selection {
-  background: #c9cbbb;
-  color: #363826;
+  background: #e3c58f;
+  color: #14223a;
 }
 
 /* A slightly darker paper panel used to group content inside a light section. */
@@ -305,4 +305,61 @@ img {
 .skip-link:focus {
   top: 1rem;
   color: var(--paper);
+}
+
+/*
+ * Motion
+ * ──────
+ * Content is always visible: without JavaScript, and for anyone whose device
+ * asks for reduced motion. Otherwise the `js` class (set in <head>) lets
+ * src/scripts/motion.ts play these:
+ *   [data-enter]   the first screen plays in on load, in --enter-i order
+ *   [data-reveal]  rises in when it scrolls into view (.is-in), in --reveal-i order
+ *   [data-count]   numbers count up once (done in the script)
+ * The rise uses `translate`, not `transform`, so it never fights a card's own
+ * hover lift.
+ */
+:root {
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+[data-count] {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-enter] {
+    animation: rise 0.9s var(--ease-out) both;
+    animation-delay: calc(var(--enter-i, 0) * 110ms + 80ms);
+  }
+
+  .js [data-reveal]:not(.is-in) {
+    opacity: 0;
+  }
+
+  .js [data-reveal].is-in {
+    animation: rise 0.75s var(--ease-out) both;
+    animation-delay: calc(var(--reveal-i, 0) * 90ms);
+  }
+
+  /* Arrows inside links nudge forward on hover. */
+  a:not(.back) > span[aria-hidden='true'] {
+    display: inline-block;
+    transition: transform 0.2s var(--ease-out);
+  }
+
+  a:not(.back):hover > span[aria-hidden='true'] {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }

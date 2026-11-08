@@ -22,7 +22,7 @@ export const profile: Profile = {
   location: 'Amman, Jordan',
   headline: 'I run finance and IT for a multi-brand restaurant group.',
   intro:
-    'IT & Finance Manager at a multi-brand F&B group in Amman. I run month-end, budgets and FP&A, and I own the company’s Odoo 18 ERP: about 40 custom modules, the integrations and the apps every branch uses daily. Founder of Mihwar and FinaCast.',
+    'IT & Finance Manager at a multi-brand F&B group in Amman. I run month-end, budgets and FP&A, and I own the company’s Odoo 18 ERP end to end: 16 modules I built, 30 more I maintain, and the integrations and apps every branch uses daily. Founder of Mihwar and FinaCast.',
 
   // cvUrl: '/abdallah-nezar-cv.pdf',
 
@@ -35,8 +35,8 @@ export const profile: Profile = {
   stats: [
     { value: '2,500+', label: 'digital checklists completed' },
     { value: '8,000+', label: 'stock requests processed' },
-    { value: '2,000+', label: 'automated tests behind the apps I run' },
-    { value: '~40', label: 'custom Odoo modules I own and maintain' },
+    { value: '3,000+', label: 'automated tests behind the apps I run' },
+    { value: '16', label: 'Odoo modules I built in-house' },
   ],
   // The case study shown beside the name on the home page (its slug).
   featuredCase: 'till-speed',
@@ -56,6 +56,9 @@ export const profile: Profile = {
           'Month-end close, sales-tax (GST) filings and the external audit',
           'Annual budget, monthly targets and daily management P&L by branch',
           'Cost control on food, waste and purchasing, tracked daily',
+          'Annual budget model built from the ERP’s own P&L, with an input file for each branch manager',
+          'Sales-tax (GST) reconciliation for every filing period, and a daily reconciliation routine',
+          'Hired, onboarded and trained the accounting team',
         ],
       },
       {
@@ -63,8 +66,9 @@ export const profile: Profile = {
         summary: 'Odoo 18 Enterprise, set up and extended to fit how the business actually runs.',
         points: [
           'Functional and technical: POS, inventory, purchasing, MRP, accounting, HR',
-          'About 40 custom modules, plus HR, card-terminal, kitchen-screen and delivery integrations',
-          'Changes rehearsed on a production copy and shipped at quiet hours',
+          '16 modules built in-house (stock counts, inspections, checklists, branch report, staff meals, dashboards), 30 more maintained and ported',
+          'Integrations: KayanHR, bank card terminals, kitchen screens, delivery platforms',
+          'Hosted on Odoo.sh; changes rehearsed on a production copy, rolled back by default, shipped at quiet hours',
         ],
       },
       {
@@ -80,7 +84,7 @@ export const profile: Profile = {
     work: {
       eyebrow: '02 — Selected work',
       title: 'What I’ve built and fixed',
-      lede: 'Two products I founded, the ERP a restaurant group runs on, and three problems from the live system.',
+      lede: 'Two products I founded, the ERP a restaurant group runs on, and five problems from the live system.',
     },
     experience: {
       eyebrow: '03 — Experience',
@@ -101,6 +105,7 @@ export const profile: Profile = {
         'An Arabic-first operations platform for multi-branch restaurants, cloud kitchens and small factories: checklists, scored inspections, AI-drafted ordering, scheduling, work orders and regulator inspection packs (SFDA, Dubai Municipality, JFDA, HACCP).',
       highlights: [
         'AI that turns paper forms into bilingual checklists',
+        'Organisations can bring their own AI key, stored encrypted (AES-256-GCM)',
         'Free tier and paid plans; recruiting design partners in Riyadh and Amman',
       ],
       stack: ['Next.js 15', 'Turborepo', 'PostgreSQL', 'Python ML'],
@@ -130,28 +135,28 @@ export const profile: Profile = {
   // ── The /work page ─────────────────────────────────────────────────────────
   erp: {
     seo: {
-      title: 'The ERP I run — Abdallah Nezar',
+      title: 'Work — Abdallah Nezar',
       description:
-        'The Odoo 18 modules, finance work and change process behind a multi-branch restaurant group, by Abdallah Nezar.',
+        'The Odoo 18 modules, finance work, systems and change process behind a multi-branch restaurant group, by Abdallah Nezar.',
     },
     page: {
-      eyebrow: 'Work',
-      title: 'The ERP I run',
-      lede: 'Odoo 18 Enterprise at a multi-brand F&B group: six tills, a central kitchen, and the modules I built or rebuilt so branches stop using paper.',
+      eyebrow: 'Finance · ERP · Systems',
+      title: 'Work',
+      lede: 'Odoo 18 Enterprise at a multi-brand F&B group: six tills, a central kitchen, and the modules I built or rebuilt so branches stop using paper. Then the finance work and the systems behind it.',
     },
     tile: {
       kind: 'Odoo 18 Enterprise',
       title: 'The ERP behind a restaurant group',
       summary:
-        'Inspections, stock counts, staff meals, dashboards, a staff academy and a sync engine — built or rebuilt by me, and run in production.',
+        'Inspections, checklists, stock counts and requests, staff meals, dashboards, a staff academy and a sync engine — built or rebuilt by me, and run in production.',
       figures: [
-        { value: '~40', label: 'custom modules' },
-        { value: '2,000+', label: 'automated tests' },
+        { value: '16', label: 'modules built in-house' },
+        { value: '3,000+', label: 'automated tests' },
       ],
     },
     figures: [
-      { value: '~40', label: 'custom Odoo modules I own and maintain' },
-      { value: '2,000+', label: 'automated tests across the apps' },
+      { value: '16', label: 'Odoo modules I built in-house' },
+      { value: '3,000+', label: 'automated tests across the apps' },
       { value: '2,500+', label: 'digital checklists completed' },
     ],
     modules: [
@@ -169,6 +174,18 @@ export const profile: Profile = {
         tags: ['Odoo 18', 'OWL', 'QWeb PDF', '289 tests'],
       },
       {
+        kind: 'Operations',
+        name: 'Branch checklists',
+        summary:
+          'Daily, weekly and monthly branch checklists on a tablet, in place of paper. This is the app behind the 2,500+ checklists.',
+        points: [
+          'Templates by shift, day of week and deadline, with automatic closing',
+          'Answers as checkboxes, yes/no, temperatures with min/max limits, numbers, photos and ratings',
+          'The central kitchen’s paper forms moved into the app',
+        ],
+        tags: ['Odoo 18', 'OWL', '57 tests'],
+      },
+      {
         kind: 'Inventory',
         name: 'Nightly and month-end stock counts',
         summary:
@@ -178,7 +195,30 @@ export const profile: Profile = {
           'A morning email and PDF to management with the night’s differences',
           'Month-end count of 500+ items per branch; reviewers fix counts in place; approval posts to inventory',
         ],
-        tags: ['Odoo 18', 'OWL', 'PostgreSQL', '436 tests'],
+        tags: ['Odoo 18', 'OWL', 'PostgreSQL', '476 tests'],
+      },
+      {
+        kind: 'Inventory',
+        name: 'Stock requests and transfers',
+        summary:
+          'Branches request stock, and nothing moves until the request is approved. This is the app behind the 8,000+ stock requests.',
+        points: [
+          'An approval workflow for every request',
+          'Transfers and manufacturing orders created from the approved request',
+          'A reorder report and a scrap export',
+        ],
+        tags: ['Odoo 18', 'Inventory', 'MRP'],
+      },
+      {
+        kind: 'Management reporting',
+        name: 'Branch daily report',
+        summary: 'One screen per branch that replaced the nightly email to management.',
+        points: [
+          'Orders, customers, average ticket, discounts, transfers, counts and staff lateness from HR shifts',
+          'Incidents and complaints logged in the report; management opens follow-ups, the branch closes them, the opener confirms',
+          'Arabic right-to-left PDF; branch managers see what was wasted, not what it cost, and no sales or cash figures, by design',
+        ],
+        tags: ['Odoo 18', 'Python', '112 tests'],
       },
       {
         kind: 'Point of sale & HR',
@@ -190,8 +230,22 @@ export const profile: Profile = {
           'Free only when the employee is checked in (live HR lookup with a 3-second timeout)',
           'One “Staff Pricelists” screen replaced about 15 pricelists cashiers picked by hand',
           'Leavers archived automatically, with a safety stop that refuses mass archiving',
+          'Found staff who had left still active, closed their access and fixed the cause',
+          'Measured cost: about 2% on till load time',
         ],
-        tags: ['Odoo 18 POS', 'KayanHR API', '55 tests', '28 tests'],
+        tags: ['Odoo 18 POS', 'KayanHR API', '64 tests', '46 tests'],
+      },
+      {
+        kind: 'Point of sale',
+        name: 'Bank card terminals',
+        summary: 'The till talks to the card terminals of two acquirers over one driver.',
+        points: [
+          'Each branch has an active and a spare terminal, with one-click failover',
+          'One shared payment method per acquirer across all branches; terminal settings visible to managers only',
+          'Ported the module’s till front end to Odoo 18',
+        ],
+        tags: ['Odoo 18 POS', 'OWL'],
+        role: 'Ported and extended in-house',
       },
       {
         kind: 'Management reporting',
@@ -202,6 +256,7 @@ export const profile: Profile = {
           'Menu engineering (Kasavana–Smith matrix), best sellers and slow movers',
           'Sales by hour, a weekday × hour heatmap, and the same weekdays last year',
           'A one-year view went from 18 s to 2–4 s after moving the heavy loops to SQL',
+          'Damaged stock by branch, then by item, linked to the records',
         ],
         tags: ['Odoo 18', 'SQL', 'OWL', 'Chart.js'],
       },
@@ -213,8 +268,9 @@ export const profile: Profile = {
           'Outline first (editable), then pages, questions, marking rubrics and an exam draft',
           'AI marks open answers; a person reviews, and only a person releases results',
           'Model choice per step, retry and fallback, a monthly spending ceiling, every AI call logged',
+          'Rebuilt in Aug–Sep 2026; Arabic SOP PDFs now read in the right order',
         ],
-        tags: ['Odoo 18', 'OWL', 'LLM APIs', 'Python'],
+        tags: ['Odoo 18', 'OWL', 'LLM APIs', 'Python', '735 tests'],
       },
       {
         kind: 'Integration',
@@ -224,10 +280,26 @@ export const profile: Profile = {
           'Mapping rules and dry runs before any write',
           'Approval before writing, and an audit log of what was written',
           'Crash recovery built in',
+          'Every money write is signed by a named person',
+          'CI and an integration test harness',
         ],
         tags: ['FastAPI', 'HTMX', 'PostgreSQL', '1,379 tests'],
+        link: { label: 'Read the case study', href: '/case-studies/sync-engine/' },
       },
     ],
+    // Smaller pieces of work, listed under the module cards.
+    alsoBuilt: [
+      'Sales by pricelist on the end-of-day (Z) report, with discount against menu price',
+      'A discount report by branch, with the reason for each discount and what each employee consumed',
+    ],
+    systems: {
+      title: 'Systems & infrastructure',
+      lede: 'How the ERP is hosted, shipped and restored.',
+      items: [
+        'Odoo.sh: every change rehearsed on a copy of production; deploys at quiet hours with a ~2.5-minute pause; any error in the test update blocks the deploy.',
+        'A local Odoo 18 Enterprise development stack that restores the full 16 GB production database in about 11 minutes.',
+      ],
+    },
     finance: {
       title: 'Finance work',
       lede: 'The finance side of the same job.',
@@ -241,8 +313,16 @@ export const profile: Profile = {
           body: 'An FP&A P&L report for the CEO, by branch, every month.',
         },
         {
+          title: 'Sales tax (GST)',
+          body: 'A reconciliation workbook for each filing period, declarations checked against the budget for 2025–2026, and a daily reconciliation routine.',
+        },
+        {
+          title: 'Accounting review',
+          body: 'A full review of the books with a findings report, and the procedure the external audit office follows.',
+        },
+        {
           title: 'The accounting team',
-          body: 'Hired the team, then wrote how it works: onboarding plan, accountant handbook, an Odoo starter guide, and the full financial and operational cycle.',
+          body: 'Wrote the job description and screened the CVs. Hired the team, then wrote how it works: onboarding plan, accountant handbook, an Odoo starter guide, and the full financial and operational cycle.',
         },
         {
           title: 'New ventures',
@@ -258,7 +338,7 @@ export const profile: Profile = {
         { title: 'Prove it on a copy.', body: 'Scripts run as a dry run by default and roll back; the real run is a separate switch.' },
         { title: 'Check before and after.', body: 'Snapshots that must match: accounts, prices, stock value.' },
         { title: 'Ship at a quiet hour,', body: 'with the undo ready.' },
-        { title: 'Leave tests behind', body: 'that fail if an Odoo update breaks the fix.' },
+        { title: 'Leave tests behind', body: 'that fail if an Odoo update breaks the fix, and a check that blocks the release if the tests did not run.' },
       ],
       closing: 'AI agents write much of the code. The spec, the checks and the decision to ship stay with me.',
     },
@@ -336,8 +416,61 @@ export const profile: Profile = {
         'Added tests that fail if a future Odoo update changes that behaviour.',
         'Deployed at midnight, when trade is under one order an hour.',
       ],
-      result: 'Live since November 2026.',
+      result: 'Live since 1 November 2026.',
       tags: ['Odoo 18 POS', 'Kitchen display', 'OWL', 'Root-cause analysis'],
+    },
+    {
+      slug: 'waste-report',
+      title: 'One report for waste and hospitality',
+      summary:
+        'Waste and free items lived in two systems that never met. One self-checking workbook brought them together, and found a loss nobody recorded.',
+      headline: { value: '476', label: 'checks against the raw data' },
+      figures: [
+        { value: '476', label: 'checks against the raw data' },
+        { value: '2', label: 'systems that never met' },
+        { value: '1', label: 'loss channel nobody recorded' },
+      ],
+      problem: 'Management could not see waste and free items in one report.',
+      found: [
+        'They are recorded in two systems that never meet: the till and the waste sheets.',
+        'The two use different items for the same bread; the link between them is the recipe.',
+        'A third loss channel, count adjustments, appeared in neither.',
+      ],
+      did: [
+        'Built a workbook that recalculates itself.',
+        'Checked it cell by cell against the raw data (476 checks) and against a second path through the database.',
+      ],
+      result: 'One report, and a recording gap the business didn’t know about.',
+      tags: ['Excel modelling', 'SQL', 'Odoo 18', 'Data reconciliation'],
+    },
+    {
+      slug: 'sync-engine',
+      title: 'Moving money between two ERPs safely',
+      summary:
+        'Before trusting my own sync engine with more of the books, I audited it end to end, then rebuilt it so every write has a name on it and nothing is written twice.',
+      headline: { value: '187 → 23', label: 'code-quality warnings after the overhaul' },
+      figures: [
+        { value: '1,379', label: 'automated tests' },
+        { value: '187 → 23', label: 'code-quality warnings' },
+        { value: 'Every', label: 'money write signed by a person' },
+      ],
+      problem:
+        'The sync engine copies POS sessions, journal entries and purchases from one Odoo database to another. Before trusting it with more of the books, I audited it end to end in July 2026.',
+      found: [
+        'A write that timed out could be retried automatically, so the same entry could be posted twice.',
+        'The closing-cash figure was counting card revenue.',
+        'Some failed posts and reconciliations were reported as successful.',
+        'Stacked rules compounded each other instead of applying once.',
+      ],
+      did: [
+        'Never retry a call that writes: a timed-out write is checked on the target before anything else happens.',
+        'Added sign-in to the app, and every money write is recorded against the person who approved it.',
+        'Failures are reported as failures, and aborted runs can be resumed.',
+        'Rules are evaluated with state, so stacked rules apply once.',
+        'Added CI, an integration test harness on a real PostgreSQL database, and a refactor that cut code-quality warnings from 187 to 23.',
+      ],
+      result: 'Every write has a name on it, and nothing is written twice. The overhaul shipped in September 2026.',
+      tags: ['FastAPI', 'HTMX', 'PostgreSQL', 'Audit', 'Testing'],
     },
   ],
 
@@ -351,8 +484,11 @@ export const profile: Profile = {
       end: 'Present',
       points: [
         'Run month-end, sales-tax filings, the external audit and the annual budget; moved management P&L reporting from weekly to daily.',
-        'Own the Odoo 18 ERP end to end: about 40 custom modules backed by 2,000+ automated tests, and apps every branch uses daily instead of paper (2,500+ checklists, 8,000+ stock requests).',
-        'Launched staff e-learning with AI-drafted courses built from company SOPs, and a daily AI auditor that checks company systems and flags issues.',
+        'Own the Odoo 18 ERP end to end: 16 modules built in-house and 30 more maintained, backed by 3,000+ automated tests, and apps every branch uses daily instead of paper (2,500+ checklists, 8,000+ stock requests).',
+        'Built the 2027 budget model from the ERP’s P&L by cost centre, with an input file for every branch manager and department head.',
+        'Hired the accounting team and wrote how it works: onboarding plan, handbook, Odoo starter guide and the full financial and operational cycle.',
+        'Re-coded 3,267 products while six tills traded, with 0 accounting or price changes; traced slow tills and returning kitchen-screen orders to their real causes from production logs.',
+        'Launched staff e-learning with AI-drafted courses built from company SOPs.',
       ],
     },
     {
@@ -374,15 +510,19 @@ export const profile: Profile = {
   skills: [
     {
       name: 'Finance',
-      items: ['Month-end close', 'Budgeting', 'FP&A reporting', 'Variance analysis', 'Cost control', 'Financial modelling', 'Feasibility studies', 'Sales tax (GST)'],
+      items: ['Month-end close', 'Budgeting', 'FP&A reporting', 'Variance analysis', 'Cost control', 'Financial modelling', 'Excel modelling', 'Feasibility studies', 'Sales-tax (GST) reconciliation', 'Team onboarding'],
     },
     {
       name: 'ERP',
-      items: ['Odoo 18 Enterprise', 'Odoo.sh', 'OWL / JavaScript', 'QWeb reports', 'POS & card terminals', 'Inventory', 'Accounting'],
+      items: ['Odoo 18 Enterprise', 'Odoo.sh', 'OWL / JavaScript', 'QWeb reports', 'POS & card terminals', 'Kitchen display', 'Inventory', 'Stock counts', 'Accounting'],
     },
     {
       name: 'Development & AI',
-      items: ['Python', 'PostgreSQL', 'SQL performance', 'FastAPI', 'Next.js', 'Docker', 'Git', 'Claude Code', 'LLM APIs'],
+      items: ['Python', 'PostgreSQL', 'SQL performance', 'FastAPI', 'HTMX', 'Next.js', 'Docker', 'Git', 'CI and test gates', 'Claude Code', 'LLM APIs'],
+    },
+    {
+      name: 'IT & infrastructure',
+      items: ['Linux', 'Networking', 'Backups & restores'],
     },
     {
       name: 'Quality & delivery',

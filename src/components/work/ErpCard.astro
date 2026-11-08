@@ -3,6 +3,7 @@ import type { Module } from '../../data/types';
 
 interface Props {
   project: Module;
+  /** Footer line used when the module doesn't set its own. */
   role: string;
 }
 
@@ -17,11 +18,21 @@ const isTestCount = (tag: string) => /\btests?$/.test(tag);
   <ul class="dash-list">
     {project.points.map((point) => <li>{point}</li>)}
   </ul>
+  {
+    project.link && (
+      <p class="card-link">
+        <a href={project.link.href}>
+          {project.link.label}
+          <span class="visually-hidden">: {project.name}</span> <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    )
+  }
   <ul class="tag-list" aria-label="Built with">
     {project.tags.map((tag) => <li class:list={['tag', { 'tag-accent': isTestCount(tag) }]}>{tag}</li>)}
   </ul>
   <div class="foot">
-    <p>{role}</p>
+    <p>{project.role ?? role}</p>
     <p class="private">Internal — not public</p>
   </div>
 </article>
@@ -31,11 +42,16 @@ const isTestCount = (tag: string) => /\btests?$/.test(tag);
     display: grid;
     gap: 1rem;
     align-content: start;
-    grid-template-rows: auto auto auto 1fr auto auto;
+    grid-template-rows: auto auto auto 1fr;
     padding: clamp(1.5rem, 3vw, 2rem);
     background: var(--paper-raised);
     border: 1px solid var(--rule);
     border-radius: var(--radius);
+    transition: border-color 0.2s ease;
+  }
+
+  .card:hover {
+    border-color: var(--rule-strong);
   }
 
   .kind {
@@ -60,6 +76,16 @@ const isTestCount = (tag: string) => /\btests?$/.test(tag);
 
   .dash-list {
     font-size: 0.95rem;
+  }
+
+  .card-link a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .card-link a:hover {
+    text-decoration: underline;
   }
 
   .tag-accent {

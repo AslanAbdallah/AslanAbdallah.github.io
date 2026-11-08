@@ -9,7 +9,7 @@ const { title, lede, steps, closing } = profile.erp.process;
   <div class="container">
     <SectionHead id="process-title" eyebrow="How I work" title={title} lede={lede} />
 
-    <ol class="steps">
+    <ol class="steps" data-reveal-group>
       {
         steps.map((step, i) => (
           <li class="step">
@@ -24,7 +24,7 @@ const { title, lede, steps, closing } = profile.erp.process;
       }
     </ol>
 
-    <p class="closing">{closing}</p>
+    <p class="closing" data-reveal>{closing}</p>
   </div>
 </section>
 

@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
+import SectionHead from '../components/SectionHead.astro';
 import GroupHead from '../components/work/GroupHead.astro';
 import ErpCard from '../components/work/ErpCard.astro';
 import CaseTile from '../components/work/CaseTile.astro';
@@ -10,29 +11,57 @@ import { profile } from '../data/profile';
 
 const { erp, caseStudies } = profile;
 const role = 'Owner — designed, built and run in-house';
+
+// The bar of section links that stays at the top while the page scrolls.
+const jump = [
+  { label: 'Modules', href: '#modules' },
+  { label: 'Finance', href: '#finance' },
+  { label: 'Systems', href: '#systems' },
+  { label: 'How I work', href: '#how-i-work' },
+  { label: 'Case studies', href: '#case-studies' },
+];
+const words = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+const caseCount = words[caseStudies.length] ?? String(caseStudies.length);
 ---
 
 <Layout title={erp.seo.title} description={erp.seo.description}>
   <PageHeader {...erp.page} figures={erp.figures} />
 
-  <section class="section" id="modules" aria-labelledby="modules-title">
+  <nav class="jump" aria-label="On this page">
+    <div class="container">
+      <ul>
+        {
+          jump.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </nav>
+
+  <section class="section first" id="modules" aria-labelledby="modules-title">
     <div class="container">
       <h2 class="visually-hidden" id="modules-title">Modules</h2>
       <GroupHead id="modules-list" title="Modules I built or rebuilt" />
-      <div class="grid">
+      <div class="grid" data-reveal-group>
         {erp.modules.map((m) => <ErpCard project={m} role={role} />)}
+      </div>
+
+      <div class="also" data-reveal>
+        <h3>Also built</h3>
+        <ul class="dash-list">
+          {erp.alsoBuilt.map((item) => <li>{item}</li>)}
+        </ul>
       </div>
     </div>
   </section>
 
   <section class="section sunk" id="finance" aria-labelledby="finance-title">
     <div class="container">
-      <header class="section-head">
-        <p class="eyebrow">Finance</p>
-        <h2 class="section-title" id="finance-title">{erp.finance.title}</h2>
-        <p class="lede">{erp.finance.lede}</p>
-      </header>
-      <ul class="finance">
+      <SectionHead id="finance-title" eyebrow="Finance" title={erp.finance.title} lede={erp.finance.lede} />
+      <ul class="finance" data-reveal-group>
         {
           erp.finance.items.map((item) => (
             <li>
@@ -45,15 +74,21 @@ const role = 'Owner — designed, built and run in-house';
     </div>
   </section>
 
+  <section class="section" id="systems" aria-labelledby="systems-title">
+    <div class="container">
+      <SectionHead id="systems-title" eyebrow="Systems" title={erp.systems.title} lede={erp.systems.lede} />
+      <ul class="systems" data-reveal-group>
+        {erp.systems.items.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
   <Process />
 
   <section class="section" id="case-studies" aria-labelledby="cases-title">
     <div class="container">
-      <header class="section-head">
-        <p class="eyebrow">Case studies</p>
-        <h2 class="section-title" id="cases-title">Three problems from the live system</h2>
-      </header>
-      <div class="cases">
+      <SectionHead id="cases-title" eyebrow="Case studies" title={`${caseCount} problems from the live system`} />
+      <div class="cases" data-reveal-group>
         {caseStudies.map((study, i) => <CaseTile study={study} number={i + 1} level={3} />)}
       </div>
     </div>
@@ -62,11 +97,104 @@ const role = 'Owner — designed, built and run in-house';
   <Contact />
 </Layout>
 
+<script>
+  // Mark the jump-menu link for the section on screen.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.jump a')];
+  const byId = new Map(links.map((a) => [a.hash.slice(1), a]));
+  if ('IntersectionObserver' in window) {
+    const watch = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          links.forEach((a) => a.removeAttribute('aria-current'));
+          byId.get(entry.target.id)?.setAttribute('aria-current', 'true');
+        }
+      },
+      { rootMargin: '-30% 0px -60% 0px' },
+    );
+    byId.forEach((_, id) => {
+      const section = document.getElementById(id);
+      if (section) watch.observe(section);
+    });
+  }
+</script>
+
 <style>
+  /* Leave room for the site header and the jump menu when a link scrolls the page. */
+  :global(html) {
+    scroll-padding-top: 7.75rem;
+  }
+
+  .jump {
+    position: sticky;
+    top: 4rem;
+    z-index: 40;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .jump ul {
+    display: flex;
+    gap: 0.5rem;
+    padding-block: 0.6rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .jump ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .jump a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .jump a[aria-current] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--paper);
+  }
+
+  .first {
+    border-top: 0;
+  }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.25rem;
+  }
+
+  .also {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    max-width: 48rem;
+  }
+
+  .also h3 {
+    margin-bottom: 1rem;
+    font-family: var(--sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
   }
 
   .sunk {
@@ -93,6 +221,20 @@ const role = 'Owner — designed, built and run in-house';
     color: var(--ink-2);
   }
 
+  .systems {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .systems li {
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    color: var(--ink-2);
+  }
+
   .cases {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -107,7 +249,8 @@ const role = 'Owner — designed, built and run in-house';
 
   @media (max-width: 860px) {
     .grid,
-    .finance {
+    .finance,
+    .systems {
       grid-template-columns: minmax(0, 1fr);
     }
   }

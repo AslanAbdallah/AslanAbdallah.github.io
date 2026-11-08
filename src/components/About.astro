@@ -7,7 +7,7 @@ import SectionHead from './SectionHead.astro';
   <div class="container">
     <SectionHead id="about-title" {...profile.home.about} />
 
-    <div class="pillars">
+    <div class="pillars" data-reveal-group>
       {
         profile.home.pillars.map((pillar) => (
           <article class="pillar">

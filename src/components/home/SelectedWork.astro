@@ -13,7 +13,7 @@ const { products, erp, caseStudies } = profile;
     <SectionHead id="work-title" {...profile.home.work} />
 
     <GroupHead id="products" title="Products I founded" />
-    <div class="products">
+    <div class="products" data-reveal-group>
       {
         products.map((p) => (
           <article class="product">
@@ -47,7 +47,7 @@ const { products, erp, caseStudies } = profile;
     </div>
 
     <GroupHead id="erp" title="The ERP I run" />
-    <article class="erp band">
+    <article class="erp band" data-reveal>
       <div class="erp-text">
         <p class="kind">{erp.tile.kind}</p>
         <h4><a href="/work/">{erp.tile.title}</a></h4>
@@ -59,7 +59,7 @@ const { products, erp, caseStudies } = profile;
           erp.tile.figures.map((f) => (
             <div>
               <dt>{f.label}</dt>
-              <dd>{f.value}</dd>
+              <dd data-count>{f.value}</dd>
             </div>
           ))
         }
@@ -67,7 +67,7 @@ const { products, erp, caseStudies } = profile;
     </article>
 
     <GroupHead id="case-studies" title="Case studies" />
-    <div class="cases">
+    <div class="cases" data-reveal-group>
       {caseStudies.map((study, i) => <CaseTile study={study} number={i + 1} />)}
     </div>
   </div>
@@ -88,6 +88,19 @@ const { products, erp, caseStudies } = profile;
     border: 1px solid var(--rule);
     border-radius: 12px;
     overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .product:hover {
+    transform: translateY(-3px);
+    border-color: var(--rule-strong);
+    box-shadow: 0 18px 36px -26px rgba(20, 34, 58, 0.6);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .product:hover {
+      transform: none;
+    }
   }
 
   .shot {
@@ -165,7 +178,7 @@ const { products, erp, caseStudies } = profile;
 
   .erp:hover {
     transform: translateY(-2px);
-    box-shadow: 0 18px 36px -24px rgba(54, 56, 38, 0.7);
+    box-shadow: 0 18px 36px -24px rgba(20, 34, 58, 0.7);
   }
 
   .erp:focus-within {

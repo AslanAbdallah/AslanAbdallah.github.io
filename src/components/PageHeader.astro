@@ -14,19 +14,19 @@ const { eyebrow, title, lede, figures = [], back = { label: 'Home', href: '/' } 
 
 <header class="page-header" id="top">
   <div class="container">
-    <a class="back" href={back.href}><span aria-hidden="true">←</span> {back.label}</a>
-    <p class="eyebrow">{eyebrow}</p>
-    <h1>{title}</h1>
-    {lede && <p class="lede">{lede}</p>}
+    <a class="back" href={back.href} data-enter style="--enter-i: 0"><span aria-hidden="true">←</span> {back.label}</a>
+    <p class="eyebrow" data-enter style="--enter-i: 1">{eyebrow}</p>
+    <h1 data-enter style="--enter-i: 2">{title}</h1>
+    {lede && <p class="lede" data-enter style="--enter-i: 3">{lede}</p>}
   </div>
   {
     figures.length > 0 && (
       <div class="figures band">
-        <dl class="container">
+        <dl class="container" data-enter style="--enter-i: 4">
           {figures.map((f) => (
             <div>
               <dt>{f.label}</dt>
-              <dd>{f.value}</dd>
+              <dd data-count>{f.value}</dd>
             </div>
           ))}
         </dl>

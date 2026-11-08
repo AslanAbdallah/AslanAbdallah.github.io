@@ -9,7 +9,7 @@ interface Props {
 const { id, index, title, intro } = Astro.props;
 ---
 
-<header class="group-head" id={id}>
+<header class="group-head" id={id} data-reveal>
   <h3>{index && <span class="index" aria-hidden="true">{index}</span>}{title}</h3>
   {intro && <p class="intro">{intro}</p>}
 </header>

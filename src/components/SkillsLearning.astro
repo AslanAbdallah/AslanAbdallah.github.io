@@ -10,7 +10,7 @@ const learning = [...profile.education, ...profile.certifications];
     <SectionHead id="skills-title" {...profile.home.skills} />
 
     <div class="columns">
-      <div class="skills">
+      <div class="skills" data-reveal-group>
         {
           profile.skills.map((group) => (
             <div class="group">
@@ -25,7 +25,7 @@ const learning = [...profile.education, ...profile.certifications];
         }
       </div>
 
-      <div class="learning" id="education">
+      <div class="learning" id="education" data-reveal>
         <h3>Education & certifications</h3>
         <ul>
           {

@@ -16,7 +16,7 @@ const href = `/case-studies/${study.slug}/`;
 <article class="tile">
   <p class="label">Case study {String(number).padStart(2, '0')}</p>
   <p class="figure">
-    <span class="value">{study.headline.value}</span>
+    <span class="value" data-count>{study.headline.value}</span>
     <span class="figure-label">{study.headline.label}</span>
   </p>
   <Heading class="title"><a href={href}>{study.title}</a></Heading>
@@ -40,7 +40,7 @@ const href = `/case-studies/${study.slug}/`;
 
   .tile:hover {
     transform: translateY(-2px);
-    box-shadow: 0 14px 30px -22px rgba(54, 56, 38, 0.55);
+    box-shadow: 0 14px 30px -22px rgba(20, 34, 58, 0.55);
   }
 
   .tile:focus-within {

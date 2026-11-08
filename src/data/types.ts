@@ -38,6 +38,10 @@ export interface Module {
   summary: string;
   points: string[];
   tags: string[];
+  /** Footer line; leave out for "Owner — designed, built and run in-house". */
+  role?: string;
+  /** Optional link, e.g. to the module's case study. */
+  link?: Link;
 }
 
 /** A case study. Each one gets its own page at /case-studies/<slug>/. */
@@ -123,6 +127,9 @@ export interface Profile {
     tile: { kind: string; title: string; summary: string; figures: Stat[] };
     figures: Stat[];
     modules: Module[];
+    /** Smaller pieces of work, as a plain list under the module cards. */
+    alsoBuilt: string[];
+    systems: { title: string; lede: string; items: string[] };
     finance: { title: string; lede: string; items: TitledItem[] };
     process: { title: string; lede: string; steps: TitledItem[]; closing: string };
   };

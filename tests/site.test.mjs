@@ -30,10 +30,66 @@ const textOf = (html) =>
 const home = pages.get('/');
 const homeText = textOf(home);
 
+// The case studies in their published order; each page's "Next" link goes to the following one.
+const caseSlugs = ['product-recode', 'till-speed', 'kitchen-screen', 'waste-report', 'sync-engine'];
+
 test('builds the home page, the work page and one page per case study', () => {
-  for (const path of ['/', '/work/', '/case-studies/product-recode/', '/case-studies/till-speed/', '/case-studies/kitchen-screen/']) {
+  for (const path of ['/', '/work/', ...caseSlugs.map((s) => `/case-studies/${s}/`)]) {
     assert.ok(pages.has(path), `missing page ${path}`);
   }
+});
+
+test('case studies are listed in order on both pages and link to each other in a loop', () => {
+  for (const path of ['/', '/work/']) {
+    const html = pages.get(path);
+    const order = [...html.matchAll(/class="title"[^>]*><a href="\/case-studies\/([^/]+)\/"/g)].map((m) => m[1]);
+    assert.deepEqual(order, caseSlugs, `${path}: case-study tiles out of order`);
+  }
+  caseSlugs.forEach((slug, i) => {
+    const next = caseSlugs[(i + 1) % caseSlugs.length];
+    const nav = pages.get(`/case-studies/${slug}/`).match(/<nav class="next"[\s\S]*?<\/nav>/)?.[0] ?? '';
+    assert.match(nav, new RegExp(`href="/case-studies/${next}/"`), `${slug}: next link should go to ${next}`);
+  });
+});
+
+test('no out-of-date module or test counts anywhere', () => {
+  for (const [path, html] of pages) {
+    assert.doesNotMatch(textOf(html), /about 40|~40|2,000\+/i, path);
+    assert.doesNotMatch(html, /<meta[^>]+content="[^"]*(about 40|~40|2,000\+)/i, `${path}: meta tag`);
+  }
+});
+
+test('the work page has a jump menu to each of its sections', () => {
+  const work = pages.get('/work/');
+  const jump = work.match(/<nav class="jump"[\s\S]*?<\/nav>/)?.[0] ?? '';
+  const targets = [...jump.matchAll(/href="#([^"]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(targets, ['modules', 'finance', 'systems', 'how-i-work', 'case-studies']);
+});
+
+test('the current role shows its six bullets, without the unconfirmed AI auditor', () => {
+  const experience = home.slice(home.indexOf('id="experience"'), home.indexOf('id="skills"'));
+  const firstEntry = experience.match(/<li class="entry"[\s\S]*?<\/li>\s*<\/ul>/)?.[0] ?? '';
+  assert.equal((firstEntry.match(/<li[ >]/g) ?? []).length - 1, 6, 'IT & Finance Manager should have six bullets');
+  assert.doesNotMatch(textOf(home), /AI auditor/i);
+});
+
+test('motion never hides content without JavaScript or for reduced motion', () => {
+  let css = (home.match(/<style[^>]*>[\s\S]*?<\/style>/g) ?? []).join('\n');
+  // Cut out every "@media (prefers-reduced-motion: no-preference) { … }" block.
+  const inside = [];
+  for (let at; (at = css.search(/@media\s*\(prefers-reduced-motion:\s*no-preference\)/)) !== -1; ) {
+    const open = css.indexOf('{', at);
+    let depth = 1;
+    let end = open + 1;
+    while (depth && end < css.length) depth += css[end] === '{' ? 1 : css[end] === '}' ? -1 : 0, end++;
+    inside.push(css.slice(open + 1, end - 1));
+    css = css.slice(0, at) + css.slice(end);
+  }
+  const motion = inside.join('\n');
+  // Hiding happens only there, and only behind the `js` class.
+  assert.match(motion, /\.js \[data-reveal\]:not\(\.is-in\)\s*\{\s*opacity:\s*0/);
+  assert.doesNotMatch(css, /\[data-(reveal|enter)\][^{}]*\{[^}]*(opacity:\s*0|animation)/, 'a motion rule applies outside the motion block');
+  assert.ok(home.includes('data-reveal'), 'no reveal targets on the home page');
 });
 
 test('home shows the name and headline', () => {
@@ -48,7 +104,7 @@ test('the hero features one case study, with the four numbers in a strip below',
   assert.ok(link && pages.has(link), 'the featured result must link to a case study page');
   assert.match(textOf(featured), /599 → 48 ms/);
   const numbers = [...hero.matchAll(/<dd[^>]*>([^<]+)<\/dd>/g)].map((m) => m[1].trim());
-  assert.deepEqual(numbers, ['2,500+', '8,000+', '2,000+', '~40']);
+  assert.deepEqual(numbers, ['2,500+', '8,000+', '3,000+', '16']);
   assert.ok(hero.indexOf('class="numbers') > hero.indexOf('<aside class="featured'), 'numbers strip must sit below the hero');
   assert.doesNotMatch(textOf(hero), /At a glance/i);
 });
@@ -102,6 +158,9 @@ test('follows the content rules on every page', () => {
     assert.doesNotMatch(text, /\bJOD\b|\bJD\s?\d/, `${path}: money amount`);
     assert.doesNotMatch(text, /\b\d{1,3}(\.\d{1,3}){3}\b/, `${path}: IP address`);
     assert.doesNotMatch(text, /leverag|synerg|cutting-edge|passionate/i, `${path}: buzzword`);
+    // Suppliers stay unnamed, and no counts of staff with access they shouldn't have had.
+    assert.doesNotMatch(text, /\bMEPS\b|Network International/i, `${path}: supplier name`);
+    assert.doesNotMatch(text, /\b43\b[^.]*\b(staff|leavers)|former staff still active/i, `${path}: staff-access count`);
   }
 });
 
@@ -109,7 +168,7 @@ test('items cut from the portfolio stay cut', () => {
   // Small tasks that aren't achievements. (Sensitive items are kept out by review, not listed here.)
   const cut = [
     /B2B catalogue/i, /hotel supply/i, /Wi-Fi/i, /Raspberry Pi/i, /UniFi/i, /maintenance checklists/i,
-    /Odoo 14/i, /receipt photos/i, /Branch operations apps/i,
+    /Odoo 14/i, /receipt photos/i, /Branch operations apps/i, /access (and security )?reviews/i,
   ];
   for (const [path, html] of pages) {
     const text = textOf(html);

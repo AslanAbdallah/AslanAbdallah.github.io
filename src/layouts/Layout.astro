@@ -36,7 +36,18 @@ const personSchema = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#f7f1e3" />
+    <meta name="theme-color" content="#f5f2ec" />
+
+    <!--
+      Turns on the entrance motion before the page paints. If the motion script
+      hasn't started within 3 seconds, the class comes off so nothing stays hidden.
+    -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      setTimeout(function () {
+        if (!window.__motion) document.documentElement.classList.remove('js');
+      }, 3000);
+    </script>
 
     <meta property="og:type" content={isHome ? 'profile' : 'article'} />
     <meta property="og:title" content={title} />
@@ -61,5 +72,8 @@ const personSchema = {
       <slot />
     </main>
     <Footer />
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>
